@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.location.LocationRequestCompat.Quality
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -24,22 +23,23 @@ import com.google.firebase.database.ValueEventListener
 
 class CartAdaptar(
     private val context: Context,
-    private val cartItems: MutableList<String>,
-    private  val cartItemsPrices: MutableList<String>,
-    private var cartDescriptions: MutableList<String>,
+    private val CartItems: MutableList<String>,
+    private val CartItemsPrices: MutableList<String>,
+    private var CartDescriptions: MutableList<String>,
     private var CartImages: MutableList<String>,
     private val CartQuantity: MutableList<Int>,
-    private val cartIngredient: MutableList<String>
+    private var CartIngredient: MutableList<String>
 
-): RecyclerView.Adapter<CartAdaptar.CartViewholder>() {
-    //intence Firebase
+): RecyclerView.Adapter<CartAdaptar.CartViewHolder>() {
+
+    //initialize Firebase
     private val auth = FirebaseAuth.getInstance()
     init {
         val database = FirebaseDatabase.getInstance()
-        val userId = auth.currentUser?.uid ?: ""
-        val cartItemNumber = cartItems.size
+        val userId = auth.currentUser?.uid ?:""
+        val cartItemNumber = CartItems.size
 
-        //initializez Firebase
+        //initialize Firebase
         itemQuantities = IntArray(cartItemNumber){ 1 }//cartItems.size
         cartItemReference = database.reference.child("user").child(userId).child("CartItem")
     }
@@ -47,26 +47,26 @@ class CartAdaptar(
         private var itemQuantities:IntArray = intArrayOf()
         private lateinit var cartItemReference:DatabaseReference
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val binding = CartItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CartViewholder(binding)
+        return CartViewHolder(binding)
     }
-    override fun onBindViewHolder(holder: CartViewholder, position: Int) {
+    override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         holder.bind(position)
     }
-    override fun getItemCount(): Int = cartItems.size
+    override fun getItemCount(): Int = CartItems.size
     //get updated quantity
     fun getUpdatedItemsQuantities(): MutableList<Int> {
         val itemQuantity = mutableListOf<Int>()
         itemQuantity.addAll(CartQuantity)
         return itemQuantity
     }
-    inner class CartViewholder(private val binding: CartItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class CartViewHolder(private val binding: CartItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int){
             binding.apply {
-                val quantity = itemQuantities[position]/////
-                CartFoodName.text = cartItems[position]
-                CartItemPrice.text = cartItemsPrices[position]
+                val quantity = itemQuantities[position]
+                CartFoodName.text = CartItems[position]
+                CartItemPrice.text = CartItemsPrices[position]
                 //load Image using Glide
                 val uriString = CartImages[position]
                 Log.d("image", "food Url: $uriString")
@@ -115,14 +115,14 @@ class CartAdaptar(
         private fun increaseQuantity(position: Int){
             if(itemQuantities[position] <10 ){
                 itemQuantities[position] ++
-                itemQuantities[position] = itemQuantities[position]
+                CartQuantity[position] = itemQuantities[position]
                 binding.cartQuantityyy.text = itemQuantities[position].toString()
             }
         }
         private fun deceaseQuantity(position: Int){
             if(itemQuantities[position] > 1){
                 itemQuantities[position] --
-                itemQuantities[position] = itemQuantities[position]
+                CartQuantity[position] = itemQuantities[position]
                 binding.cartQuantityyy.text = itemQuantities[position].toString()
             }
         }
@@ -137,17 +137,17 @@ class CartAdaptar(
         private fun removeItem(position: Int, uniqueKey: String) {
             if(uniqueKey != null){
                 cartItemReference.child(uniqueKey).removeValue().addOnSuccessListener {
-                    cartItems.removeAt(position)
+                    CartItems.removeAt(position)
                     CartImages.removeAt(position)
-                    cartDescriptions.removeAt(position)
+                    CartDescriptions.removeAt(position)
                     CartQuantity.removeAt(position)
-                    cartItemsPrices.removeAt(position)
-                    cartIngredient.removeAt(position)
+                    CartItemsPrices.removeAt(position)
+                    CartIngredient.removeAt(position)
                     Toast.makeText(context,"Item Delete", Toast.LENGTH_SHORT).show()
                     //update item quanitites
                     itemQuantities = itemQuantities.filterIndexed { index, i -> index != position}.toIntArray()
                     notifyItemRemoved(position)
-                    notifyItemRangeChanged(position, cartItems.size)
+                    notifyItemRangeChanged(position, CartItems.size)
                 }.addOnFailureListener{
                     Toast.makeText(context,"Faild to Delete", Toast.LENGTH_SHORT).show()
                 }

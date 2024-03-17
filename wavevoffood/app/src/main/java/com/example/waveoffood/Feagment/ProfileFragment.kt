@@ -1,15 +1,11 @@
 package com.example.waveoffood.Feagment
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.bumptech.glide.load.resource.gif.GifDrawableResource
-import com.denzcoskun.imageslider.animations.Toss
-import com.example.waveoffood.R
+import androidx.fragment.app.Fragment
 import com.example.waveoffood.databinding.FragmentFrofileBinding
 import com.example.waveoffood.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +32,19 @@ class ProfileFragment : Fragment() {
 
         binding = FragmentFrofileBinding.inflate(inflater, container, false)
         setUserData()
+
+        binding.apply {
+            name.isEnabled = false
+            email.isEnabled = false
+            address.isEnabled =false
+            phone.isEnabled = false
+        binding.editButton.setOnClickListener {
+                name.isEnabled =! name.isEnabled
+                email.isEnabled =! email.isEnabled
+                address.isEnabled =! address.isEnabled
+                phone.isEnabled =! phone.isEnabled
+            }
+        }
 
         binding.saveInfoButton.setOnClickListener {
             val name = binding.name.text.toString()

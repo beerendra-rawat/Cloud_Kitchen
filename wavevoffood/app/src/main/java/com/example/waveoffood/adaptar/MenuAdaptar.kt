@@ -13,8 +13,9 @@ import com.example.waveoffood.model.MenuItem
 
 class MenuAdaptar(
     private val menuItems: List<MenuItem>,
-    private val requireContext: Context): RecyclerView.Adapter<MenuAdaptar.MenuViewHolder>() {
-       override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
+    private val requireContext: Context
+): RecyclerView.Adapter<MenuAdaptar.MenuViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val binding = MenuItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MenuViewHolder(binding)
     }
@@ -22,12 +23,14 @@ class MenuAdaptar(
         holder.bind(position)
     }
     override fun getItemCount(): Int = menuItems.size
+
+
     inner class MenuViewHolder (private val binding: MenuItemBinding): RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener{
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION){
-                   openDetailsActivity(position)
+                    openDetailsActivity(position)
                 }
             }
         }

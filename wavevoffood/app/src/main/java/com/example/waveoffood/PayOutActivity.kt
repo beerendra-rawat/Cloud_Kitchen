@@ -1,8 +1,8 @@
 package com.example.waveoffood
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.waveoffood.databinding.ActivityPayOutBinding
 import com.example.waveoffood.model.OrderDetails
 import com.google.firebase.auth.FirebaseAuth
@@ -11,7 +11,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
 
 class PayOutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPayOutBinding
@@ -34,6 +33,7 @@ class PayOutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPayOutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //initialize Firebase and user details
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().getReference()
@@ -46,21 +46,18 @@ class PayOutActivity : AppCompatActivity() {
         foodItemName = intent.getStringArrayListExtra("FoodItemName") as ArrayList<String>
         foodItemPrice = intent.getStringArrayListExtra("FoodItemPrice") as ArrayList<String>
         foodItemImage = intent.getStringArrayListExtra("FoodItemImage") as ArrayList<String>
-        foodItemDescription =
-            intent.getStringArrayListExtra("FoodItemDescription") as ArrayList<String>
-        foodItemIngredient =
-            intent.getStringArrayListExtra("FoodItemIngredient") as ArrayList<String>
+        foodItemDescription = intent.getStringArrayListExtra("FoodItemDescription") as ArrayList<String>
+        foodItemIngredient = intent.getStringArrayListExtra("FoodItemIngredient") as ArrayList<String>
         foodItemQuantities = intent.getIntegerArrayListExtra("FoodItemQuantities") as ArrayList<Int>
 
-        totalAmount = calculateTotalAmount().toString() + "RS"
-        binding.TotalPrice.setText(totalAmount)
-        //binding.totalAmounts.setText(totalAmount)
+        totalAmount = calculateTotalAmount().toString() + "$"
+        binding.totalPrice.setText(totalAmount)
         binding.backButton.setOnClickListener {
             finish()
         }
 
         binding.PlaceMyOrder.setOnClickListener {
-            //get data fro text view
+            //get data from text view
             name = binding.name.text.toString().trim()
             address = binding.address.text.toString().trim()
             phone = binding.phone.text.toString().trim()
@@ -70,60 +67,48 @@ class PayOutActivity : AppCompatActivity() {
                 placeOder()
             }
         }
-    }
 
+    }
     private fun placeOder() {
-        userId = auth.currentUser?.uid ?: ""
+        userId = auth.currentUser?.uid ?:""
         val time = System.currentTimeMillis()
         val itemPushKey = databaseReference.child("OrderDetails").push().key
-        val orderDetails = OrderDetails(
-            userId,
-            name,
-            foodItemName,
-            foodItemPrice,
-            foodItemImage,
-            foodItemQuantities,
-            address,
-            phone,
-            time,
-            itemPushKey,
-            false,
-            false
-        )
+        val orderDetails = OrderDetails(userId, name, foodItemName, foodItemPrice, foodItemImage, foodItemQuantities, address, phone, totalAmount, time, itemPushKey, false, false)
         val orderReference = databaseReference.child("OrderDetails").child(itemPushKey!!)
         orderReference.setValue(orderDetails).addOnSuccessListener {
             val bottomSheetDialog = CongratsBottomSheet()
             bottomSheetDialog.show(supportFragmentManager, "Test")
-            //removeItemFromCart()
-            // addOrderToHistory(orderDetails)
+            removeItemFromCart()
+            addOrderToHistory(orderDetails)
         }
             .addOnFailureListener {
                 Toast.makeText(this, "Failed To Order", Toast.LENGTH_SHORT).show()
             }
     }
 
-    //    private fun addOrderToHistory(orderDetails: OrderDetails) {
-//        databaseReference.child("user").child(userId).child("BuyHistory")
-//            .child(orderDetails.itemPushKey!!)
-//            .setValue(orderDetails).addOnSuccessListener { }
-//    }
-//
-//    private fun removeItemFromCart() {
-//        val cartItemsReference = databaseReference.child("user").child(userId).child("CartItem")
-//        cartItemsReference.removeValue()
-//    }
+    private fun addOrderToHistory(orderDetails: OrderDetails) {
+        databaseReference.child("user").child(userId).child("BuyHistory")
+            .child(orderDetails.itemPushKey!!)
+            .setValue(orderDetails).addOnSuccessListener { }
+    }
+
+    private fun removeItemFromCart() {
+        val cartItemsReference = databaseReference.child("user").child(userId).child("CartItem")
+        cartItemsReference.removeValue()
+    }
+
     private fun calculateTotalAmount(): Int {
         var totalAmount = 0
         for (i in 0 until foodItemPrice.size) {
             var price = foodItemPrice[i]
             val lastChar = price.last()
-            val priceIntValue = if (lastChar == '$') {
+            val priceValue = if (lastChar == '$') {
                 price.dropLast(1).toInt()
             } else {
                 price.toInt()
             }
             var quantity = foodItemQuantities[i]
-            totalAmount += priceIntValue * quantity
+            totalAmount += priceValue *quantity
         }
         return totalAmount
     }
@@ -146,10 +131,10 @@ class PayOutActivity : AppCompatActivity() {
                         }
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                 }
             })
         }
     }
+
 }

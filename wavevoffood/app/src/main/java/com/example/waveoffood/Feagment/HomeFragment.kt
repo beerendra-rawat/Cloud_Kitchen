@@ -30,13 +30,9 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container,false)
         binding.ViewAllMenu.setOnClickListener {
@@ -48,7 +44,7 @@ class HomeFragment : Fragment() {
         }
 
     private fun retraieveAndDisplayPopulerItems() {
-        //get refrence to database
+        //get reference to database
         database = FirebaseDatabase.getInstance()
         val foodRef:DatabaseReference = database.reference.child("menu")
         menuItems = mutableListOf()
@@ -63,11 +59,8 @@ class HomeFragment : Fragment() {
                 //display random popular item
                 randomPopularItems()
             }
-
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
-
         })
     }
 
@@ -80,9 +73,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setPopularItemAdapter(subsetMenuItems: List<MenuItem>) {
-        val adaptar = MenuAdaptar(subsetMenuItems, requireContext())
+        val adapter = MenuAdaptar(subsetMenuItems, requireContext())
         binding.PopularRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.PopularRecyclerView.adapter = adaptar
+        binding.PopularRecyclerView.adapter = adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,9 +91,7 @@ class HomeFragment : Fragment() {
 
         imageSlider.setItemClickListener(object : ItemClickListener {
             override fun doubleClick(position: Int) {
-                TODO("Not yet implemented")
             }
-
             override fun onItemSelected(position: Int) {
                 val itemPositions = imageList[position]
                 val itemMessage="Selected Image $position"

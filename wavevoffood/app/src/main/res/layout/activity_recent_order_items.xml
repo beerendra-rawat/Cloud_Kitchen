@@ -8,7 +8,7 @@
     tools:context=".recentOrderItems">
 
     <TextView
-        android:id="@+id/RecentBuyItem"
+        android:id="@+id/textView29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RecentBuyItem"
@@ -33,11 +33,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/buyRecyclerView"
-        android:layout_height="681dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="409dp"
+        android:layout_height="674dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton"
+        app:layout_constraintTop_toBottomOf="@+id/textView29"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/recent_buy_item" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

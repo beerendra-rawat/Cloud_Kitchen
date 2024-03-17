@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/Beerenda"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginStart="8dp"
@@ -81,7 +81,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="32dp"
-                    app:cardBackgroundColor="#4CAF50"
+                    app:cardBackgroundColor="#6C6D6C"
                     app:cardCornerRadius="20dp"
                     app:layout_constraintBottom_toTopOf="@+id/ReceivedButton"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
                     android:layout_width="60dp"
                     android:layout_height="20dp"
                     android:background="@drawable/addtocartshape"
-                    android:text="Received"
+                    android:text="Received" android:visibility="invisible"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -115,7 +115,7 @@
             android:textSize="16sp"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+            app:layout_constraintTop_toBottomOf="@+id/Beerenda" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/BuyAgainRecyclerView"

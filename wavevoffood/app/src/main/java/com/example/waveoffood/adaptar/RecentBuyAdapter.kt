@@ -10,22 +10,23 @@ import com.example.waveoffood.databinding.RecentBuyItemBinding
 
 class RecentBuyAdapter(
     private var context: Context,
-    private val foodNameList: ArrayList<String>,
-    private val foodImageList: ArrayList<String>,
-    private val foodPriceList: ArrayList<String>,
-    private val foodQuantityList: ArrayList<Int>
-    ): RecyclerView.Adapter<RecentBuyAdapter.RecentViewholder>() {
+    private var foodNameList: ArrayList<String>,
+    private var foodImageList: ArrayList<String>,
+    private var foodPriceList: ArrayList<String>,
+    private var foodQuantityList: ArrayList<Int>
+    ): RecyclerView.Adapter<RecentBuyAdapter.RecentViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentViewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentViewHolder {
         val binding = RecentBuyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RecentViewholder(binding)
+        return RecentViewHolder(binding)
     }
     override fun getItemCount(): Int = foodNameList.size
-    override fun onBindViewHolder(holder: RecentViewholder, position: Int) {
+    override fun onBindViewHolder(holder: RecentViewHolder, position: Int) {
         holder.bind(position)
     }
-    inner class RecentViewholder(private val binding: RecentBuyItemBinding):RecyclerView.ViewHolder(binding.root) {
+
+    inner class RecentViewHolder(private val binding: RecentBuyItemBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             binding.apply {
                 foodName.text = foodNameList[position]
@@ -36,6 +37,5 @@ class RecentBuyAdapter(
                 Glide.with(context).load(uri).into(foodImage)
             }
         }
-
     }
 }

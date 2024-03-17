@@ -3,21 +3,20 @@ package com.example.waveoffood.model
 import android.os.Parcel
 import android.os.Parcelable
 import java.io.Serializable
-import kotlin.collections.ArrayList
 
-class OrderDetails():Serializable {
-    var userUid : String? = null
+class OrderDetails() : Serializable {
+    var userUid: String? = null
     var userName: String? = null
-    var foodName: MutableList<String>?= null
-    var foodImage: MutableList<String>?= null
+    var foodName: MutableList<String>? = null
+    var foodImage: MutableList<String>? = null
     var foodPrice: MutableList<String>? = null
-    var foodQuantity: MutableList<Int>?= null
+    var cartQuantity: MutableList<Int>? = null
     var address: String? = null
-    var totalPrice: String?= null
-    var phoneNumber: String?= null
-    var orderAccepted: Boolean?= false
-    var paymentReceived: Boolean?= false
-    var itemPushKey: String?= null
+    var totalPrice: String? = null
+    var phoneNumber: String? = null
+    var orderAccepted: Boolean? = false
+    var paymentReceived: Boolean? = false
+    var itemPushKey: String? = null
     var currentTime: Long = 0
 
     constructor(parcel: Parcel) : this() {
@@ -26,8 +25,8 @@ class OrderDetails():Serializable {
         address = parcel.readString()
         totalPrice = parcel.readString()
         phoneNumber = parcel.readString()
-        orderAccepted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        paymentReceived = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        orderAccepted = parcel.readByte() != 0.toByte()
+        paymentReceived = parcel.readByte() != 0.toByte()
         itemPushKey = parcel.readString()
         currentTime = parcel.readLong()
     }
@@ -35,12 +34,13 @@ class OrderDetails():Serializable {
     constructor(
         userId: String,
         name: String,
-        foodName: ArrayList<String>,
-        foodPrice: ArrayList<String>,
-        foodImage: ArrayList<String>,
-        foodQuantities: ArrayList<Int>,
+        foodItemName: ArrayList<String>,
+        foodItemPrice: ArrayList<String>,
+        foodItemImage: ArrayList<String>,
+        foodItemQuantities: ArrayList<Int>,
         address: String,
         phone: String,
+        totalAmount: String,
         time: Long,
         itemPushKey: String?,
         b: Boolean,
@@ -48,22 +48,20 @@ class OrderDetails():Serializable {
     ) : this(){
         this.userUid = userId
         this.userName = name
-        this.foodName = foodName
-        this.foodPrice= foodPrice
-        this.foodImage = foodImage
-        this.foodQuantity = foodQuantity
+        this.foodName = foodItemName
+        this.foodPrice = foodItemPrice
+        this.foodImage  =foodItemImage
+        this.cartQuantity = foodItemQuantities
         this.address = address
-        this.totalPrice = totalPrice
+        this.totalPrice = totalAmount
         this.phoneNumber = phone
-        this.currentTime = time
+        this.currentTime =time
         this.itemPushKey = itemPushKey
         this.orderAccepted = orderAccepted
         this.paymentReceived = paymentReceived
-
     }
 
-
-   fun writeToParcel(parcel: Parcel, flags: Int) {
+    fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(userUid)
         parcel.writeString(userName)
         parcel.writeString(address)
@@ -75,7 +73,7 @@ class OrderDetails():Serializable {
         parcel.writeLong(currentTime)
     }
 
-   fun describeContents(): Int {
+    fun describeContents(): Int {
         return 0
     }
 

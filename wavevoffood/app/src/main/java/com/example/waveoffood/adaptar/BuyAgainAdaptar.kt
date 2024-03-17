@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.waveoffood.databinding.BuyAgainItemBinding
-import com.example.waveoffood.databinding.FragmentSearchBinding
-import java.util.ArrayList
 
-class BuyAgainAdaptar(private val buyAgainFoodName:MutableList<String>, private val
-buyAgainFoodPrice:MutableList<String>, private val buyAgainFoodImage:MutableList<String>,
-    private var requireContext: Context) : RecyclerView.Adapter<BuyAgainAdaptar.BuyAgainViewHolder>() {
+class BuyAgainAdaptar(
+    private val buyAgainFoodName:MutableList<String>,
+    private val buyAgainFoodPrice:MutableList<String>,
+    private val buyAgainFoodImage:MutableList<String>,
+    private var requireContext: Context
+) : RecyclerView.Adapter<BuyAgainAdaptar.BuyAgainViewHolder>() {
 
     override fun onBindViewHolder(holder: BuyAgainViewHolder, position: Int) {
         holder.bind(buyAgainFoodName[position], buyAgainFoodPrice[position], buyAgainFoodImage[position])
@@ -23,6 +24,7 @@ buyAgainFoodPrice:MutableList<String>, private val buyAgainFoodImage:MutableList
     }
 
     override fun getItemCount(): Int = buyAgainFoodName.size
+
     inner class BuyAgainViewHolder(private val binding: BuyAgainItemBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(foodName: String, foodPrice: String, foodImage: String) {
             binding.buyAgainFoodName.text = foodName
@@ -31,8 +33,5 @@ buyAgainFoodPrice:MutableList<String>, private val buyAgainFoodImage:MutableList
             val uri = Uri.parse(uriString)
             Glide.with(requireContext).load(uri).into(binding.buyAgainFoodImage)
         }
-
     }
-
-
 }

@@ -1,11 +1,10 @@
 package com.example.waveoffood
 
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.denzcoskun.imageslider.animations.Toss
 import com.example.waveoffood.databinding.ActivityDetailBinding
 import com.example.waveoffood.model.CartItems
 import com.google.firebase.auth.FirebaseAuth
@@ -59,11 +58,11 @@ class DetailActivity : AppCompatActivity() {
             foodName.toString(),
             foodPrice.toString(),
             foodDescription.toString(),
-            foodImage.toString(),foodIngredient.toString())
+            foodImage.toString(),foodIngredient.toString(),1)
 
         //save data to cartItem to firebase
         database.child("user").child(userId).child("CartItem").push().setValue(cartItem).addOnSuccessListener {
-            Toast.makeText(this, "Item added into cart Successfuly", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Item added into cart Successful", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener{
             Toast.makeText(this, "Item not added", Toast.LENGTH_SHORT).show()
         }

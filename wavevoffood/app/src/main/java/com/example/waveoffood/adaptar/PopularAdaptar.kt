@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.waveoffood.DetailActivity
-import com.example.waveoffood.databinding.FragmentHomeBinding
 import com.example.waveoffood.databinding.PopularitemBinding
 
 class PopularAdaptar (private  val items:List<String>, private val price:List<String>, private val image:List<Int>, private val requireContext:Context) : RecyclerView.Adapter<PopularAdaptar.PopularViewHolder>() {

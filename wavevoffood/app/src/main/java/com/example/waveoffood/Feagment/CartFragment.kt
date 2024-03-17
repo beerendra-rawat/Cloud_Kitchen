@@ -2,11 +2,11 @@ package com.example.waveoffood.Feagment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.waveoffood.PayOutActivity
 import com.example.waveoffood.adaptar.CartAdaptar
@@ -54,11 +54,10 @@ class CartFragment : Fragment() {
         }
 
         return binding.root
-       // return inflater.inflate(R.layout.fragment_cart, container, false)
     }
 
     private fun getOrderItemDetails() {
-        val orderIdReference: DatabaseReference = database.reference.child("user").child(userId).child("CartIem")
+        val orderIdReference: DatabaseReference = database.reference.child("user").child(userId).child("CartItem")
         val foodName = mutableListOf<String>()
         val foodPrice = mutableListOf<String>()
         val foodImage = mutableListOf<String>()
@@ -81,7 +80,6 @@ class CartFragment : Fragment() {
                 }
                 orderNow(foodName, foodPrice, foodDescription, foodImage, foodIngredients, foodQuantities)
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(), "Order making Failed, Please try again.", Toast.LENGTH_SHORT).show()
             }
@@ -112,7 +110,7 @@ class CartFragment : Fragment() {
      // database reference to the firebase
         database = FirebaseDatabase.getInstance()
         userId = auth.currentUser?.uid?:""
-        val foodRefrence : DatabaseReference = database.reference.child("user").child(userId).child("CartItem")
+        val foodReference : DatabaseReference = database.reference.child("user").child(userId).child("CartItem")
         //list to store  cart items
         foodNames = mutableListOf()
         foodPrices = mutableListOf()
@@ -121,7 +119,7 @@ class CartFragment : Fragment() {
         foodIngredients = mutableListOf()
         quantity = mutableListOf()
         //fetch data from the database
-        foodRefrence.addListenerForSingleValueEvent(object : ValueEventListener {
+        foodReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (foodSnapshot in snapshot.children){
                     //get the cartItems object from the child node
